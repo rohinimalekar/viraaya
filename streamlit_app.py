@@ -10,7 +10,6 @@ import ast
 import operator as op
 import requests
 import streamlit as st
-from dotenv import load_dotenv
 from groq import Groq
 from ddgs import DDGS
 
@@ -56,10 +55,9 @@ st.markdown("""
 # ---------------------------
 # Setup Groq
 # ---------------------------
-load_dotenv()
-groq_api_key = os.getenv("GROQ_API_KEY")
+groq_api_key = st.secrets.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY")
 if not groq_api_key:
-    st.error("❌ No GROQ_API_KEY found! Add it in Streamlit secrets or .env file.")
+    st.error("❌ No GROQ_API_KEY found! Add it in Streamlit secrets.")
     st.stop()
 
 client = Groq(api_key=groq_api_key)
@@ -262,6 +260,7 @@ def respond(user_input):
 # UI
 # ---------------------------
 st.title("✨ Viraaya")
+st.caption("Your personal AI assistant | Chat • Search • Calculator • Jokes • Memory")
 
 # Tone selector in sidebar
 with st.sidebar:
